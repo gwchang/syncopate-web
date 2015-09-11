@@ -2,8 +2,14 @@ from rest_framework import serializers
 from .models import Cluster, Channel
 from django.contrib.auth.models import User
 
+class ClusterConciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cluster
+        fields = ('name', 'api_key', 'token')
+
 class UserSerializer(serializers.ModelSerializer):
-    clusters = serializers.PrimaryKeyRelatedField(many=True, queryset=Cluster.objects.all())
+    #clusters = serializers.PrimaryKeyRelatedField(many=True, queryset=Cluster.objects.all())
+    clusters = ClusterConciseSerializer(many=True, read_only=True)
     
     class Meta:
         model = User
@@ -16,6 +22,7 @@ class ChannelSerializer(serializers.ModelSerializer):
 
 # REFERENCE
 # http://www.django-rest-framework.org/api-guide/relations/
+# https://docs.djangoproject.com/en/dev/topics/db/queries/#lookups-that-span-relationships
 class ClusterSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     #channels = serializersPrimaryKeyRelatedField(many=True, queryset=Channel.objects.all())
