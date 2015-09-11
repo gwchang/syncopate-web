@@ -17,10 +17,12 @@ def cluster_list(request, format=None):
     #print(request.user)
     if request.method == 'GET':
         #clusters = Cluster.objects.all()
+        # List all clusters owned by user
         clusters = Cluster.objects.filter(owner=request.user.id)
         serializer = ClusterSerializer(clusters, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
+        # Create new cluster for user
         serializer = ClusterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=request.user.id)
@@ -48,7 +50,7 @@ def cluster_detail(request, pk, format=None):
     elif request.method == 'PUT':
         serializer = ClusterSerializer(cluster, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=request.user.id)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -56,6 +58,7 @@ def cluster_detail(request, pk, format=None):
         cluster.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# Admin view only
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
