@@ -18,6 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^',           include('clusters.urls')),
+    url(r'^api-auth/',  include('rest_framework.urls', namespace='rest_framework')),
     url(r'^login/$',    'django.contrib.auth.views.login',  { 
         'template_name' : 'registration/login.html' }),
     url(r'^logout/$',   'django.contrib.auth.views.logout', { 

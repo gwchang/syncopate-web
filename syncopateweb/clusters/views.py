@@ -8,16 +8,17 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 
-@login_required
-#@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+#@login_required
+@permission_classes([permissions.IsAuthenticatedOrReadOnly])
 @api_view(['GET', 'POST'])
 def cluster_list(request, format=None):
     """
     List all clusters, or create a new cluster.
     """
+    print(request.user)
     if request.method == 'GET':
         #clusters = Cluster.objects.all()
-        clusters = Cluster.objects.filter(owner=request.user)
+        clusters = Cluster.objects.filter(owner=request.user.id)
         serializer = ClusterSerializer(clusters, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
