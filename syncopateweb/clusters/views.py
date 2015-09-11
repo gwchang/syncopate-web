@@ -16,7 +16,8 @@ def cluster_list(request, format=None):
     List all clusters, or create a new cluster.
     """
     if request.method == 'GET':
-        clusters = Cluster.objects.all()
+        #clusters = Cluster.objects.all()
+        clusters = Cluster.objects.filter(owner=request.user)
         serializer = ClusterSerializer(clusters, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -32,10 +33,12 @@ def cluster_detail(request, pk, format=None):
     """
     Retrieve, update or delete a cluster instance.
     """
+    queryset = Cluster.objects.filter(pk=pk, owner=request.user)
     try:
-        cluster = Cluster.objects.get(pk=pk)
+        cluster = queryset.get()
     except Cluster.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        # return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'GET':
         serializer = ClusterSerializer(cluster)
