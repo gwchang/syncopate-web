@@ -7,7 +7,9 @@ from .serializers import ClusterSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
 
+@login_required
 @api_view(['GET', 'POST'])
 def cluster_list(request, format=None):
     """
@@ -24,6 +26,7 @@ def cluster_list(request, format=None):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@login_required
 @api_view(['GET', 'PUT', 'DELETE'])
 def cluster_detail(request, pk, format=None):
     """

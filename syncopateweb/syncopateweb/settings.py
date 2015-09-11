@@ -106,3 +106,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/clusters'
+LOGIN_URL = 'django.contrib.auth.views.login'
