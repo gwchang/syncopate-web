@@ -3,8 +3,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.cluster_list, name='cluster-list'),
-    url(r'^(?P<pk>[0-9]+)/$', views.cluster_detail, name='cluster-detail'),
+    url(r'^clusters/$', views.cluster_list, name='cluster-list'),
+    url(r'^clusters/(?P<pk>[0-9]+)/$', views.cluster_detail, name='cluster-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
