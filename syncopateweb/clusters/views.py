@@ -18,6 +18,7 @@ def cluster_list(request, format=None):
     if request.method == 'GET':
         #clusters = Cluster.objects.all()
         # List all clusters owned by user
+        #print(request.data.dict())
         clusters = Cluster.objects.filter(owner=request.user.id)
         serializer = ClusterSerializer(clusters, many=True)
         return Response(serializer.data)
