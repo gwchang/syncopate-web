@@ -9,27 +9,24 @@ from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 
 @login_required
-#@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+@permission_classes([permissions.IsAuthenticated])
 @api_view(['GET', 'POST'])
 def cluster_list(request, format=None):
     """
     List all clusters, or create a new cluster.
     """
     #print(request.user)
-    if request.user.is_staff:
-        if request.method == 'GET':
-            #clusters = Cluster.objects.all()
-            clusters = Cluster.objects.filter(owner=request.user.id)
-            serializer = ClusterSerializer(clusters, many=True)
-            return Response(serializer.data)
-        elif request.method == 'POST':
-            serializer = ClusterSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(status=status.HTTP_403_FORBIDDEN)
+    if request.method == 'GET':
+        #clusters = Cluster.objects.all()
+        clusters = Cluster.objects.filter(owner=request.user.id)
+        serializer = ClusterSerializer(clusters, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = ClusterSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #@login_required
 @permission_classes([permissions.IsAuthenticated])
