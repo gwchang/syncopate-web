@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class ClusterConciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cluster
-        fields = ('name', 'api_key', 'token')
+        fields = ('name', 'token') # api_key should not be shown
 
 class UserSerializer(serializers.ModelSerializer):
     #clusters = serializers.PrimaryKeyRelatedField(many=True, queryset=Cluster.objects.all())
@@ -30,5 +30,5 @@ class ClusterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Cluster
-        fields = ('name', 'api_key', 'token', 'owner', 'channels')
+        fields = ('name', 'token', 'owner', 'channels') # api_key should not be shown
 
