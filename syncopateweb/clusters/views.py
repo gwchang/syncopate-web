@@ -2,8 +2,9 @@
 #from django.http import HttpResponse
 
 from .models import Cluster
-from .serializers import ClusterSerializer
-#from rest_framework import generics
+from django.contrib.auth.models import User
+from .serializers import ClusterSerializer, UserSerializer
+from rest_framework import generics
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -54,3 +55,13 @@ def cluster_detail(request, pk, format=None):
     elif request.method == 'DELETE':
         cluster.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+

@@ -5,6 +5,8 @@ from . import views
 urlpatterns = [
     url(r'^clusters/$', views.cluster_list, name='cluster-list'),
     url(r'^clusters/(?P<pk>[0-9]+)/$', views.cluster_detail, name='cluster-detail'),
+    url(r'^users/$', views.UserList.as_view(), name='user-list'),
+    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='user-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
