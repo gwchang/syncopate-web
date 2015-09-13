@@ -31,6 +31,34 @@ def cluster_list(request, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #@login_required
+@api_view(['GET'])
+def cluster_detail_login(request, format=None):
+    """
+    Retrieve default login cluster instance.
+    """
+    queryset = Cluster.objects.filter(owner=request.user.id)
+    if len(queryset) == 0:
+        data = { 'detail' : 'Access forbidden' }
+        return Response(data,status=status.HTTP_403_FORBIDDEN)
+    elif request.method == 'GET':
+        pk_list = [ cluster.pk for cluster in queryset ]
+        pk = max(pk_list)
+        
+        if len(pk_list) > 0:
+            queryset = Cluster.objects.filter(pk=pk, owner=request.user.id)
+            try:
+                cluster = queryset.get()
+            except Cluster.DoesNotExist:
+                data = { 'detail' : 'Access forbidden' }
+                return Response(data,status=status.HTTP_403_FORBIDDEN)
+
+            serializer = ClusterSerializer(cluster)
+            return Response(serializer.data)
+        else:
+            empty = {}
+            return Response(empty)
+
+#@login_required
 @api_view(['GET', 'PUT', 'DELETE'])
 def cluster_detail(request, pk, format=None):
     """
