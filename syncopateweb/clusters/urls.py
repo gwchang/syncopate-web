@@ -4,10 +4,10 @@ from . import views
 
 urlpatterns = [
     # User login, detailed cluster list view
-    url(r'^cluster/$', views.cluster_list, name='cluster-list'),
+    url(r'^cluster-list/$', views.cluster_list, name='cluster-list'),
 
     # User login, default login cluster view
-    url(r'^cluster/login/$', views.cluster_detail_login, name='cluster-detail-login'),
+    url(r'^cluster-login/$', views.cluster_login, name='cluster-login'),
 
     # User login, detailed cluster single view
     url(r'^cluster/(?P<pk>[0-9]+)/$', views.cluster_detail, name='cluster-detail'),

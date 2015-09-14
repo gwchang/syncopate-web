@@ -32,7 +32,7 @@ def cluster_list(request, format=None):
 
 #@login_required
 @api_view(['GET'])
-def cluster_detail_login(request, format=None):
+def cluster_login(request, format=None):
     """
     Retrieve default login cluster instance.
     """
