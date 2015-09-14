@@ -89,7 +89,7 @@ def cluster_sync(request, format=None):
     for t in topics:
         chquery = Channel.objects.filter(cluster_id=cid, group=group, topic=t)
         if len(chquery) == 0:
-            c = Channel.objects.create(cluster_id=cid, group=group, topic=t, series_id="")
+            c = Channel.objects.create(cluster_id=cid, group=group, topic=t)
 
     return Response(status=status.HTTP_204_NO_CONTENT)
 

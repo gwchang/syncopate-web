@@ -11,4 +11,3 @@ class Channel(models.Model):
     cluster     = models.ForeignKey(Cluster, related_name='channels') # Cluster than channel belongs to
     group       = models.CharField(max_length=200)  # Group of channel
     topic       = models.CharField(max_length=200)  # Topic of channel
-    series_id   = models.CharField(max_length=200)  # Series id of channel
