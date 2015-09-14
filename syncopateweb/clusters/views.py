@@ -42,9 +42,9 @@ def cluster_detail_login(request, format=None):
         return Response(data,status=status.HTTP_403_FORBIDDEN)
     elif request.method == 'GET':
         pk_list = [ cluster.pk for cluster in queryset ]
-        pk = max(pk_list)
         
         if len(pk_list) > 0:
+            pk = max(pk_list)
             queryset = Cluster.objects.filter(pk=pk, owner=request.user.id)
             try:
                 cluster = queryset.get()
