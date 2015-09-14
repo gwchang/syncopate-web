@@ -3,6 +3,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = [
+    # Syncopate client authentication
+    url(r'^auth/$', views.authenticate, name='cluster-authentication'),
+
     # User login, detailed cluster list view
     url(r'^cluster/$', views.cluster_list, name='cluster-list'),
 
