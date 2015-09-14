@@ -2,4 +2,4 @@
 *pycache*
 *.pyc
 *.sqlite3
-syncopateweb/clusters/migration
+syncopateweb/clusters/migration*

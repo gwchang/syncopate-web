@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     # Syncopate client authentication
-    url(r'^auth/$', views.authenticate, name='cluster-authentication'),
+    url(r'^cluster-sync/$', views.cluster_sync, name='cluster-sync'),
 
     # User login, detailed cluster list view
     url(r'^cluster-list/$', views.cluster_list, name='cluster-list'),

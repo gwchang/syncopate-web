@@ -60,9 +60,9 @@ def cluster_login(request, format=None):
             return Response(empty)
 
 @api_view(['POST'])
-def authenticate(request, format=None):
+def cluster_sync(request, format=None):
     """
-    Authentication process with Syncopate API
+    Sync process with Syncopate API client
     """
     # Check token auth
     api_key = None
