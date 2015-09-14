@@ -1,0 +1,5 @@
+*.swp
+*pycache*
+*.pyc
+*.sqllite3
+syncopateweb/clusters/migration

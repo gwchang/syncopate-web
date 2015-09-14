@@ -2,8 +2,7 @@
 #from django.http import HttpResponse
 from .models import Cluster, Channel
 from django.contrib.auth.models import User
-from .serializers import ClusterSerializer, UserSerializer, ChannelSerializer
-from .permissions import HasValidAPIKey
+from .serializers import ClusterDetailSerializer, ClusterConciseSerializer, UserSerializer, ChannelSerializer
 from rest_framework import generics, status, permissions
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
@@ -22,11 +21,11 @@ def cluster_list(request, format=None):
         # List all clusters owned by user
         #print(request.data.dict())
         clusters = Cluster.objects.filter(owner=request.user.id)
-        serializer = ClusterSerializer(clusters, many=True)
+        serializer = ClusterConciseSerializer(clusters, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
         # Create new cluster for user
-        serializer = ClusterSerializer(data=request.data)
+        serializer = ClusterConciseSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=request.user.id)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -34,7 +33,7 @@ def cluster_list(request, format=None):
 
 #@login_required
 @api_view(['GET'])
-def cluster_detail_login(request, format=None):
+def cluster_login(request, format=None):
     """
     Retrieve default login cluster instance.
     """
@@ -44,9 +43,9 @@ def cluster_detail_login(request, format=None):
         return Response(data,status=status.HTTP_403_FORBIDDEN)
     elif request.method == 'GET':
         pk_list = [ cluster.pk for cluster in queryset ]
-        pk = max(pk_list)
         
         if len(pk_list) > 0:
+            pk = max(pk_list)
             queryset = Cluster.objects.filter(pk=pk, owner=request.user.id)
             try:
                 cluster = queryset.get()
@@ -54,7 +53,7 @@ def cluster_detail_login(request, format=None):
                 data = { 'detail' : 'Access forbidden' }
                 return Response(data,status=status.HTTP_403_FORBIDDEN)
 
-            serializer = ClusterSerializer(cluster)
+            serializer = ClusterDetailSerializer(cluster)
             return Response(serializer.data)
         else:
             empty = {}
@@ -110,11 +109,11 @@ def cluster_detail(request, pk, format=None):
         return Response(data,status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'GET':
-        serializer = ClusterSerializer(cluster)
+        serializer = ClusterDetailSerializer(cluster)
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = ClusterSerializer(cluster, data=request.data, partial=True)
+        serializer = ClusterDetailSerializer(cluster, data=request.data)
         if serializer.is_valid():
             serializer.save(owner=request.user.id)
             return Response(serializer.data)
