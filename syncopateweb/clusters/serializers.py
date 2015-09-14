@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ChannelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Channel
-        fields = ('group', 'topic', 'series_id')       
+        fields = ('group', 'topic')       
 
 # REFERENCE
 # http://www.django-rest-framework.org/api-guide/relations/
@@ -30,5 +30,5 @@ class ClusterDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Cluster
-        fields = ('name', 'token', 'api_key', 'owner', 'channels')
+        fields = ('name', 'token', 'api_key', 'owner', 'channels', 'id')
 
