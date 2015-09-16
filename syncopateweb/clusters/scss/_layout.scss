@@ -1,0 +1,21 @@
+.api-info {
+  width: 750px;
+  margin: 0 auto;
+  margin-top: 200px;
+
+  .info-row {
+    font-size: 2em;
+    height: 1.5em;
+    .info-label {
+      float: left;
+      width: 25%;
+      color: $highcolor;
+      font-weight: 300;
+    }
+    .info-value {
+      float: left;
+      width: 75%;
+      font-weight: 100;
+    }
+  }
+}

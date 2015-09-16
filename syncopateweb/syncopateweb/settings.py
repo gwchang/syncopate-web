@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'eyk^gj_bc(1-&l*k@i#(xmim)g8l^usu@^xo!b2j$(wt4vltqb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -102,6 +102,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
 LOGIN_REDIRECT_URL = '/clusters'
 LOGIN_URL = 'django.contrib.auth.views.login'

@@ -1,5 +1,8 @@
-#from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.template import Context
+from django.http import HttpResponseRedirect
 #from django.http import HttpResponse
+from django.template import RequestContext, loader
 from .models import Cluster, Channel
 from django.contrib.auth.models import User
 from .serializers import ClusterDetailSerializer, ClusterConciseSerializer, UserSerializer, ChannelSerializer
@@ -8,6 +11,28 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
+from .utils import genToken
+from .forms import NewClusterForm
+import hashlib, random
+
+@login_required
+def index(request):
+    clusters = Cluster.objects.filter(owner=request.user.id)
+    form = NewClusterForm()
+    if len(clusters) == 0:
+        return render(request, 'clusters/index.html', {'nocluster':True,'form':form})
+    serializer = ClusterConciseSerializer(clusters[len(clusters)-1])
+    return render(request, 'clusters/index.html', {'cluster':serializer.data,'form':form})
+
+@api_view(['POST'])
+def cluster_new(request, format=None):
+    form = NewClusterForm(request.POST)
+    if form.is_valid():
+        randomkey = hashlib.md5(str(random.getrandbits(256))).hexdigest();
+        token = genToken(randomkey)
+        cluster = Cluster.objects.create(name=form.cleaned_data['name'],api_key=randomkey,token=token,owner=request.user)
+    
+    return redirect('/clusters')
 
 #@login_required
 @api_view(['GET', 'POST'])
@@ -68,6 +93,7 @@ def cluster_sync(request, format=None):
     api_key = None
     auth = request.META.get('HTTP_AUTHORIZATION', b'')
     split = auth.split(' ')
+    print auth
     if split[0] == 'OAuth':
         api_key = split[1]
 

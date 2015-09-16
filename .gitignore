@@ -3,4 +3,6 @@
 *.pyc
 *.sqlite3
 syncopateweb/clusters/migrations
-
+syncopateweb/static
+syncopateweb/clusters/static
+syncopateweb/clusters/node_modules
